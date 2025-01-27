@@ -6,7 +6,6 @@
 
 enum custom_keycodes {
   RGB_SLD = ML_SAFE_RANGE,
-  LANG_TOG,
 };
 
 
@@ -47,8 +46,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     LGUI(LSFT(KC_S)),KC_F1,          KC_F2,          KC_F3,          KC_F4,          KC_F5,                                          KC_F6,          KC_F7,          KC_F8,          KC_F9,          KC_F10,         KC_F11,         
     LALT(LCTL(KC_TAB)),KC_NO,          KC_NO,          LALT(KC_E),     LALT(KC_R),     LALT(KC_T),                                     KC_PAGE_UP,     KC_HOME,        KC_UP,          KC_END,         KC_NO,          KC_F12,         
     KC_TRANSPARENT, LALT(KC_ENTER), TD(DANCE_6),    LALT(KC_D),     LALT(LCTL(KC_ENTER)),KC_NO,                                          KC_PGDN,        KC_LEFT,        KC_DOWN,        KC_RIGHT,       KC_NO,          KC_CAPS,        
-    KC_TRANSPARENT, LCTL(KC_Z),     LCTL(KC_X),     LCTL(KC_C),     LCTL(KC_V),     LANG_TOG,                                         KC_NO,          TO(4),          KC_NO,          KC_NO,          KC_NO,          CW_TOGG,        
-
+    KC_TRANSPARENT, LCTL(KC_Z),     LCTL(KC_X),     LCTL(KC_C),     LCTL(KC_V),     TO(1),                                          KC_NO,          TO(4),          KC_NO,          KC_NO,          KC_NO,          CW_TOGG,        
                                                     KC_TRANSPARENT, KC_TRANSPARENT,                                 LALT(LCTL(KC_LEFT_SHIFT)),KC_LEFT_ALT
   ),
   [4] = LAYOUT_voyager(
@@ -127,36 +125,16 @@ bool rgb_matrix_indicators_user(void) {
   return true;
 }
 
-static bool isRussian = false;
-
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    if (record->event.pressed)
-    {
-        switch (keycode)
-        {
-            case LANG_TOG:
-                if (isRussian)
-                {
-                    layer_move(0);
-                    tap_code16(LALT(KC_LSFT));
-                    isRussian = false;
-                }
-                else
-                {
-                    layer_move(1);
-                    tap_code16(LALT(KC_LSFT));
-                    isRussian = true;
-                }
+  switch (keycode) {
 
-            return false;
-
-            case RGB_SLD:
-                rgblight_mode(1);
-            return false;
-        }
-    }
-
-    return true;
+    case RGB_SLD:
+      if (record->event.pressed) {
+        rgblight_mode(1);
+      }
+      return false;
+  }
+  return true;
 }
 
 
